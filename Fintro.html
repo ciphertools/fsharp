@@ -97,7 +97,7 @@
             predictable behavior, especially in complex systems.
         </p>
         <p>
-            F#’s type system is another major advantage. It uses type inference to reduce verbosity while still catching
+            F#'s type system is another major advantage. It uses type inference to reduce verbosity while still catching
             many errors at compile time. You rarely need to annotate every variable with a type; the compiler can infer
             most types from context. At the same time, the type system is rich enough to express sophisticated domain
             constraints. Features like discriminated unions and pattern matching make it easy to represent domain
@@ -106,8 +106,8 @@
         <p>
             Performance is also a consideration. Because F# compiles to .NET Intermediate Language (IL), it benefits
             from the same runtime optimisations as C#. You can write high-level, declarative code without sacrificing
-            too much performance. For many workloads—such as data processing, backend services, and numerical
-            computation—F# is more than fast enough.
+            too much performance. For many workloads, such as data processing, backend services, and numerical
+            computation, F# is more than fast enough.
         </p>
         <p>
             Finally, F# has a reputation for being pleasant to work with. The language encourages small, composable
@@ -121,7 +121,7 @@
         <p>
             The phrase “functional-first” captures the essence of F#. In practice, this means that F# encourages you to
             treat functions as first-class citizens, avoid unnecessary mutation, and think in terms of expressions that
-            return values. Let’s unpack a few of these ideas.
+            return values. Let's unpack a few of these ideas.
         </p>
 
         <h3>Immutability by default</h3>
@@ -287,6 +287,7 @@ printfn "Total: %d" total
             Even in this small snippet, you can see how F# encourages a pipeline-oriented style. Each step is a pure
             transformation of data, and the overall logic is easy to follow.
         </p>
+        <p>See the exploration of generating <a href="Fibonacci and F.html">Fibonacci numbers in F#</a> for more examples of F# code.</p>
     </section>
 
     <section>
