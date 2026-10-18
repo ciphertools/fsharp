@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>F# Introduction</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="An approachable introduction to the F# programming language, explaining its functional-first design, key features, and why it is worth learning for modern software development.">
+    <link rel="icon" type="image/png" href="fsharp.png" />
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: #f5f7fa;
+            color: #222;
+        }
+        header, footer {
+            background: #2b2d42;
+            color: #fff;
+            padding: 1.5rem;
+        }
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem 3rem;
+            background: #ffffff;
+        }
+        h1 {
+            color: rgb(243, 243, 243);
+        }
+        h2, h3 {
+            color: #1b1d32;
+        }
+        code {
+            background: #f0f0f5;
+            padding: 0.15rem 0.35rem;
+            border-radius: 4px;
+            font-family: "Consolas", "SF Mono", Menlo, monospace;
+        }
+        pre {
+            background: #1b1d32;
+            color: #f8f8f2;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+        a {
+            color: #0066cc;
+        }
+        ul, ol {
+            margin-left: 1.5rem;
+        }
+        section {
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Getting Started with F#</h1>
+    <p>An approachable guide to understanding the F# programming language and why it's worth your time.</p>
+</header>
+
+<main>
+    <section>
+        <h2>What is F#?</h2>
+        <p>
+            F# is a modern, strongly typed programming language that runs primarily on the .NET platform. It is often
+            described as a <a href="Functional programming.html">functional programming</a> language, which means that its design encourages you to think in terms of
+            functions, immutability, and expressions rather than objects and mutable state. However, F# is not purely
+            functional: it also supports object-oriented and imperative programming styles, giving you a flexible
+            toolbox for solving real-world problems.
+        </p>
+        <p>
+            Originally developed by Microsoft Research, F# has grown into a mature, open-source language with an active
+            community and excellent tooling. You can use F# to build web applications, data-processing pipelines,
+            domain-specific languages, financial models, scientific simulations, and much more. Because it targets .NET,
+            F# can interoperate with C#, VB.NET, and other languages in the ecosystem, allowing you to reuse existing
+            libraries and frameworks with minimal friction.
+        </p>
+        <p>
+            At its core, F# aims to help you write code that is concise, correct, and expressive. Many developers find
+            that once they become comfortable with F#'s syntax and functional mindset, they can model complex domains
+            more clearly and reduce the amount of boilerplate code they write. This combination of clarity and power is
+            one of the main reasons people fall in love with F#.
+        </p>
+    </section>
+
+    <section>
+        <h2>Why consider F#?</h2>
+        <p>
+            If you already know a mainstream language like <a href="F v Python.html">Python</a> or <a href="F v Java.html">Java</a>, you might wonder why you should invest
+            time learning F#. One compelling reason is that F# encourages a different way of thinking about problems.
+            Instead of focusing on classes and mutable objects, you focus on data transformations, composition of
+            functions, and explicit modeling of states and transitions. This shift often leads to fewer bugs and more
+            predictable behavior, especially in complex systems.
+        </p>
+        <p>
+            F#’s type system is another major advantage. It uses type inference to reduce verbosity while still catching
+            many errors at compile time. You rarely need to annotate every variable with a type; the compiler can infer
+            most types from context. At the same time, the type system is rich enough to express sophisticated domain
+            constraints. Features like discriminated unions and pattern matching make it easy to represent domain
+            concepts directly in code, rather than scattering flags and magic values throughout your program.
+        </p>
+        <p>
+            Performance is also a consideration. Because F# compiles to .NET Intermediate Language (IL), it benefits
+            from the same runtime optimisations as C#. You can write high-level, declarative code without sacrificing
+            too much performance. For many workloads—such as data processing, backend services, and numerical
+            computation—F# is more than fast enough.
+        </p>
+        <p>
+            Finally, F# has a reputation for being pleasant to work with. The language encourages small, composable
+            functions, clear data models, and explicit handling of edge cases. Over time, this can make your codebase
+            feel more like a well-structured narrative than a tangled web of special cases.
+        </p>
+    </section>
+
+    <section>
+        <h2>Core ideas in F#: functional-first programming</h2>
+        <p>
+            The phrase “functional-first” captures the essence of F#. In practice, this means that F# encourages you to
+            treat functions as first-class citizens, avoid unnecessary mutation, and think in terms of expressions that
+            return values. Let’s unpack a few of these ideas.
+        </p>
+
+        <h3>Immutability by default</h3>
+        <p>
+            In F#, values are immutable by default. When you bind a value using the <code>let</code> keyword, you are
+            creating a name for a value that will not change. If you need a different value, you create a new binding
+            rather than modifying the existing one. This approach reduces a whole class of bugs related to shared
+            mutable state and makes reasoning about your program much easier.
+        </p>
+        <pre>
+let x = 10
+let y = x + 5
+// x is still 10; y is 15
+        </pre>
+        <p>
+            While F# does allow mutation when necessary (for example, with <code>mutable</code> fields or reference
+            cells), the language nudges you toward immutable designs. Over time, many developers find that they rely on
+            mutation far less than they expected, and their code becomes more predictable as a result.
+        </p>
+
+        <h3>Functions as building blocks</h3>
+        <p>
+            Functions in F# are first-class values. You can pass them as arguments, return them from other functions,
+            store them in data structures, and compose them to build more complex behavior. This makes it natural to
+            break problems down into small, reusable pieces.
+        </p>
+        <pre>
+// A simple function
+let add a b = a + b
+
+// Using partial application
+let addFive = add 5
+let result = addFive 10  // result is 15
+        </pre>
+        <p>
+            Partial application and function composition are powerful tools in F#. They allow you to create specialised
+            versions of general functions and chain transformations together in a clear, linear way. This style often
+            leads to code that reads like a pipeline of operations applied to data.
+        </p>
+
+        <h3>Expressions over statements</h3>
+        <p>
+            F# emphasises expressions—constructs that produce values—rather than statements that simply perform actions.
+            For example, conditional logic in F# is usually written as an expression that returns a value, not as a
+            statement that controls flow and leaves variables to be updated later. This encourages a more declarative
+            style, where you describe what you want rather than how to mutate state step by step.
+        </p>
+        <pre>
+let classifyNumber n =
+    if n &gt; 0 then "positive"
+    elif n &lt; 0 then "negative"
+    else "zero"
+        </pre>
+        <p>
+            Because most constructs are expressions, you can nest them and combine them freely. This often leads to
+            concise, readable code that directly reflects the logic of your domain.
+        </p>
+    </section>
+
+    <section>
+        <h2>Key language features</h2>
+
+        <h3>Type inference</h3>
+        <p>
+            One of the first things you'll notice in F# is how little type annotation you need. The compiler infers
+            types based on how values and functions are used. This keeps the code compact while still giving you the
+            safety of static typing. When something doesn't type-check, the compiler will point out the mismatch, often
+            catching errors before you ever run the program.
+        </p>
+
+        <h3>Discriminated unions</h3>
+        <p>
+            Discriminated unions are a way to define types that can take one of several named forms. They are ideal for
+            modeling domain concepts with clear variants. For example, you might represent the result of an operation as
+            either success or failure, each carrying different data.
+        </p>
+        <pre>
+type OperationResult =
+    | Success of string
+    | Failure of string
+
+let handleResult r =
+    match r with
+    | Success msg -&gt; printfn "Success: %s" msg
+    | Failure err -&gt; printfn "Error: %s" err
+        </pre>
+        <p>
+            This pattern is far more expressive than using generic error codes or nullable values. It forces you to
+            consider all possible cases, which leads to more robust code.
+        </p>
+
+        <h3>Pattern matching</h3>
+        <p>
+            Pattern matching is a central feature of F#. It allows you to deconstruct values and branch on their shape
+            in a concise, readable way. You can match on discriminated unions, tuples, lists, and more. Combined with
+            exhaustive checking, pattern matching helps ensure that you handle every relevant case.
+        </p>
+        <pre>
+let describeList lst =
+    match lst with
+    | [] -&gt; "The list is empty."
+    | [x] -&gt; sprintf "The list has one element: %A" x
+    | x :: xs -&gt; sprintf "Head: %A, Tail length: %d" x (List.length xs)
+        </pre>
+        <p>
+            This style of branching often feels more natural than nested <code>if</code> statements or switch
+            constructs. It also scales well as your domain grows more complex.
+        </p>
+
+        <h3>Records and tuples</h3>
+        <p>
+            F# provides lightweight ways to group data. Tuples are simple ordered groupings of values, while records are
+            named collections of fields. Records are particularly useful for modeling domain entities in a clear,
+            self-documenting way.
+        </p>
+        <pre>
+type Person =
+    { Name : string
+      Age  : int }
+
+let alice = { Name = "Alice"; Age = 30 }
+let bob   = { Name = "Bob";   Age = 25 }
+        </pre>
+        <p>
+            Because records are immutable by default, you typically create new records when something changes rather
+            than modifying existing ones. F# offers convenient syntax for copying and updating records, which keeps
+            code tidy.
+        </p>
+    </section>
+
+    <section>
+        <h2>Basic F# syntax: a quick tour</h2>
+        <p>
+            To give you a feel for F#, let's walk through a small example that combines several of the ideas discussed
+            above. Suppose you want to process a list of integers, filter out the negative ones, double the remaining
+            values, and then compute the sum.
+        </p>
+        <pre>
+let numbers = [ -3; -1; 0; 2; 4; 7 ]
+
+let processNumbers nums =
+    nums
+    |> List.filter (fun n -&gt; n &gt;= 0)
+    |> List.map (fun n -&gt; n * 2)
+    |> List.sum
+
+let total = processNumbers numbers
+printfn "Total: %d" total
+        </pre>
+        <p>
+            This example shows several idiomatic F# features:
+        </p>
+        <ul>
+            <li><strong>List literals:</strong> The square brackets create a list of integers.</li>
+            <li><strong>Pipelines:</strong> The <code>|&gt;</code> operator passes the result of one expression into the
+                next function, creating a clear flow of transformations.</li>
+            <li><strong>Anonymous functions:</strong> The <code>fun n -&gt; ...</code> syntax defines small inline
+                functions used for filtering and mapping.</li>
+            <li><strong>Standard library:</strong> The <code>List</code> module provides many useful functions for
+                working with lists, such as <code>filter</code>, <code>map</code>, and <code>sum</code>.</li>
+        </ul>
+        <p>
+            Even in this small snippet, you can see how F# encourages a pipeline-oriented style. Each step is a pure
+            transformation of data, and the overall logic is easy to follow.
+        </p>
+    </section>
+
+    <section>
+        <h2>F# in the .NET ecosystem</h2>
+        <p>
+            Because F# runs on .NET, it has access to a vast ecosystem of libraries and tools. You can use F# with
+            ASP.NET Core to build web APIs, with Azure Functions for serverless workloads, or with desktop frameworks
+            like WPF and WinForms if you need graphical applications. Interoperability with C# is straightforward: you
+            can reference C# projects from F# and vice versa, and you can call into existing .NET libraries without
+            special ceremony.
+        </p>
+        <p>
+            Tooling support is strong as well. Visual Studio, JetBrains Rider, and Visual Studio Code (with appropriate
+            extensions) all provide syntax highlighting, IntelliSense, debugging, and project management for F#. The
+            <code>dotnet</code> CLI makes it easy to create, build, and run F# projects from the command line, which is
+            particularly convenient for scripting and automation.
+        </p>
+        <p>
+            F# also shines in data-centric scenarios. Libraries like FSharp.Data, Deedle, and Plotly.NET make it
+            straightforward to consume data from APIs, manipulate datasets, and visualise results. Combined with the
+            language's functional style, this can be a powerful environment for data analysis and exploratory
+            programming.
+        </p>
+    </section>
+
+    <section>
+        <h2>How to start learning F#</h2>
+        <p>
+            If this introduction has piqued your interest, the best next step is to write some F# yourself. You can
+            begin by installing the .NET SDK and creating a simple console application:
+        </p>
+        <pre>
+dotnet new console -lang "F#" -o HelloFSharp
+cd HelloFSharp
+dotnet run
+        </pre>
+        <p>
+            From there, experiment with small programs: write functions, play with lists and records, and try modeling a
+            simple domain you care about. Focus on keeping functions small and pure, and let the type system guide you.
+            When the compiler complains, treat it as a conversation about what your code really means.
+        </p>
+        <p>
+            As you grow more comfortable, explore topics like asynchronous workflows, domain modeling with discriminated
+            unions, and building web services. The F# community maintains tutorials, sample projects, and documentation
+            that can help you deepen your understanding and see how F# is used in production systems.
+        </p>
+        <p>
+            Most importantly, give yourself time to adjust to the functional-first mindset. If you come from an
+            object-oriented background, some idioms will feel unfamiliar at first. Over time, though, many developers
+            find that F# changes how they think about software design in a positive, lasting way.
+        </p>
+    </section>
+
+    <section>
+        <h2>Closing thoughts</h2>
+        <p>
+            F# is a language that rewards curiosity. It invites you to model your domain clearly, embrace immutability,
+            and compose small, focused functions into larger solutions. By combining functional ideas with the practical
+            strengths of the .NET ecosystem, F# offers a compelling environment for building robust, maintainable
+            software.
+        </p>
+        <p>
+            Whether you are interested in data science, backend services, financial modeling, or simply expanding your
+            programming horizons, F# is worth exploring. The language’s emphasis on clarity, correctness, and
+            expressiveness can reshape how you approach problems—not just in F#, but in every language you use
+            afterward.
+        </p>
+        <p>
+            If you’re ready to take the next step, set up a small F# project, write a few functions, and see how it
+            feels to think in a functional-first way. You may discover that F# becomes one of your favorite tools for
+            turning ideas into reliable, elegant code.
+        </p>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; <span id="year"></span> Introduction to F#, the world's most beautiful programming language </p>
+</footer>
+
+<script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

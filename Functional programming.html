@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Functional Programming</title>
+    <link rel="icon" type="image/png" href="functionalprogramming.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="An in-depth, approachable introduction to the functional programming paradigm, with examples from F#, Haskell, Scala, and other languages that embrace functions as the primary building blocks of software.">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --bg-alt: #020617;
+            --accent: #22c55e;
+            --accent-soft: #bbf7d0;
+            --text: #e5e7eb;
+            --muted: #9ca3af;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background: radial-gradient(circle at top, #1e293b 0, #020617 55%, #000 100%);
+            color: var(--text);
+        }
+
+        header {
+            background: linear-gradient(135deg, #22c55e 0%, #0ea5e9 40%, #6366f1 100%);
+            color: #0b1120;
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+        }
+
+        header h1 {
+            margin: 0 0 0.5rem;
+            font-size: 2.4rem;
+            letter-spacing: 0.03em;
+        }
+
+        header p {
+            max-width: 720px;
+            margin: 0.5rem auto 0;
+            font-size: 1.05rem;
+        }
+
+        main {
+            max-width: 980px;
+            margin: 2rem auto 3rem;
+            padding: 0 1.5rem;
+        }
+
+        section {
+            background: rgba(15, 23, 42, 0.9);
+            border-radius: 14px;
+            padding: 1.75rem 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.65);
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 1.6rem;
+            color: var(--accent-soft);
+        }
+
+        h3 {
+            margin-top: 1.2rem;
+            font-size: 1.25rem;
+            color: var(--accent);
+        }
+
+        p {
+            line-height: 1.7;
+            margin: 0.6rem 0;
+            color: var(--text);
+        }
+
+        strong {
+            color: var(--accent-soft);
+        }
+
+        ul, ol {
+            margin: 0.6rem 0 0.6rem 1.5rem;
+            padding: 0;
+        }
+
+        li {
+            margin: 0.3rem 0;
+            color: var(--text);
+        }
+
+        code {
+            background: rgba(15, 23, 42, 0.9);
+            border-radius: 4px;
+            padding: 0.15rem 0.35rem;
+            font-family: "Consolas", "SF Mono", Menlo, monospace;
+            color: var(--accent-soft);
+            border: 1px solid rgba(148, 163, 184, 0.4);
+        }
+
+        pre {
+            background: #020617;
+            border-radius: 10px;
+            padding: 1rem 1.1rem;
+            overflow-x: auto;
+            font-size: 0.95rem;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+        }
+
+        pre code {
+            border: none;
+            background: transparent;
+            color: #e5e7eb;
+        }
+
+        a {
+            color: #38bdf8;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background: var(--bg-alt);
+            color: var(--muted);
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(148, 163, 184, 0.35);
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Functional Programming: thinking in functions, not in state</h1>
+    <p>
+        An in-depth, approachable introduction to the functional programming paradigm, with examples from F#, Haskell,
+        Scala, and other languages that embrace functions as the primary building blocks of software.
+    </p>
+</header>
+
+<main>
+    <section>
+        <h2>What is functional programming?</h2>
+        <p>
+            Functional programming is a programming paradigm that treats computation as the evaluation of mathematical
+            functions and avoids changing state and mutable data. Instead of building programs around objects that
+            expose methods and internal state, functional programming encourages you to build programs as compositions
+            of pure functions—functions that always produce the same output for the same input and have no side effects.
+        </p>
+        <p>
+            While the idea has roots in lambda calculus and academic research, functional programming is not just a
+            theoretical curiosity. It is a practical way of structuring software that can reduce bugs, improve
+            composability, and make complex systems easier to reason about. Languages such as <strong><u><a href="fintro.html">F#</a></u></strong>,
+            <strong>Haskell</strong>, <strong>Scala</strong>, <strong>OCaml</strong>, <strong>Elixir</strong>, and
+            <strong>Clojure</strong> all embrace functional ideas to varying degrees. Even multi-paradigm languages like
+            JavaScript and Python have adopted functional features such as higher-order functions, map/filter/reduce,
+            and immutable data structures.
+        </p>
+        <p>
+            At its core, functional programming is about how you think. You focus on transformations of data rather than
+            on instructions that mutate state step by step. You describe what a result should be, not how to shuffle
+            variables around to achieve it. This shift in perspective can feel unfamiliar at first, especially if you
+            come from an object-oriented background, but it often leads to clearer, more robust designs.
+        </p>
+    </section>
+
+    <section>
+        <h2>Key principles of functional programming</h2>
+        <p>
+            Although different languages implement functional ideas in different ways, there are several core
+            principles that show up again and again. Understanding these principles will help you recognise functional
+            code even in languages that are not purely functional.
+        </p>
+
+        <h3>Pure functions</h3>
+        <p>
+            A <strong>pure function</strong> is a function that has two key properties: it always returns the same
+            result for the same input, and it does not cause observable side effects (such as modifying global state,
+            writing to a database, or printing to the console). Pure functions are the building blocks of functional
+            programming because they are easy to reason about, test, and compose.
+        </p>
+        <p>
+            In F#, for example, a pure function might look like this:
+        </p>
+        <pre><code>let square x = x * x
+
+let sumOfSquares numbers =
+    numbers
+    |> List.map square
+    |> List.sum</code></pre>
+        <p>
+            The functions <code>square</code> and <code>sumOfSquares</code> depend only on their inputs and produce
+            outputs without touching external state. You can call them repeatedly with confidence that they will behave
+            the same way every time.
+        </p>
+
+        <h3>Immutability</h3>
+        <p>
+            Functional programming emphasises <strong>immutable data</strong>. Once a value is created, it does not
+            change. Instead of updating existing structures, you create new ones that reflect the desired changes. This
+            approach eliminates entire categories of bugs related to shared mutable state, race conditions, and
+            unexpected interactions between different parts of a system.
+        </p>
+        <p>
+            In F#, values bound with <code>let</code> are immutable by default:
+        </p>
+        <pre><code>let original = [1; 2; 3]
+let doubled  = original |> List.map (fun n -&gt; n * 2)
+// original is still [1; 2; 3]; doubled is [2; 4; 6]</code></pre>
+        <p>
+            Many functional languages provide efficient persistent data structures that make immutability practical,
+            even for large collections. These structures share underlying memory between versions, so creating “new”
+            versions is often cheaper than it might appear.
+        </p>
+
+        <h3>First-class and higher-order functions</h3>
+        <p>
+            In functional programming, functions are <strong>first-class values</strong>. You can store them in
+            variables, pass them as arguments, return them from other functions, and include them in data structures.
+            Functions that take other functions as arguments or return them as results are called
+            <strong>higher-order functions</strong>.
+        </p>
+        <p>
+            This idea is central to languages like F#, Haskell, and Scala. It allows you to build powerful abstractions
+            and reusable patterns. For example, F#'s pipeline operator and collection functions rely heavily on
+            higher-order functions:
+        </p>
+        <pre><code>let processNumbers nums =
+    nums
+    |> List.filter (fun n -&gt; n &gt; 0)
+    |> List.map    (fun n -&gt; n * 3)
+    |> List.sum</code></pre>
+        <p>
+            Here, <code>List.filter</code> and <code>List.map</code> both receive functions as arguments, making it easy
+            to customise behavior without rewriting the underlying iteration logic.
+        </p>
+
+        <h3>Expressions over statements</h3>
+        <p>
+            Functional programming favours <strong>expressions</strong> (constructs that produce values) over statements
+            that simply perform actions. Conditionals, loops, and even error handling are often expressed as
+            value-producing expressions. This encourages a declarative style where you describe the result you want
+            rather than the steps to mutate state.
+        </p>
+        <p>
+            In Haskell, for instance, almost everything is an expression. F# follows a similar pattern:
+        </p>
+        <pre><code>let classify n =
+    if n &gt; 0 then "positive"
+    elif n &lt; 0 then "negative"
+    else "zero"</code></pre>
+        <p>
+            Because <code>if</code> is an expression, you can nest it, compose it, and pass it around like any other
+            value-producing construct.
+        </p>
+    </section>
+
+    <section>
+        <h2>Functional programming in practice</h2>
+        <p>
+            Functional programming is not limited to academic examples. It is used in production systems across finance,
+            telecommunications, web development, data science, and more. Different languages bring their own flavor to
+            the paradigm, but the underlying ideas remain consistent.
+        </p>
+
+        <h3>F#: functional-first on .NET</h3>
+        <p>
+            <strong>F#</strong> is a functional-first language that runs on the .NET platform. It combines functional
+            concepts such as immutability, discriminated unions, and pattern matching with pragmatic features like
+            object-oriented interoperability and access to the entire .NET ecosystem. This makes F# a compelling choice
+            for developers who want the benefits of functional programming without leaving familiar tooling behind.
+        </p>
+        <p>
+            F# encourages you to model domains using expressive types and pure functions. For example, you might
+            represent the possible states of an order as a discriminated union:
+        </p>
+        <pre><code>type OrderStatus =
+    | Pending
+    | Shipped of trackingId : string
+    | Cancelled of reason   : string</code></pre>
+        <p>
+            Combined with pattern matching, this approach forces you to consider all relevant cases explicitly, which
+            leads to more robust code. F#'s type inference and concise syntax help keep the codebase compact while still
+            benefiting from static typing.
+        </p>
+
+        <h3>Haskell: purity and strong types</h3>
+        <p>
+            <strong>Haskell</strong> is often cited as a canonical functional language. It is purely functional, meaning
+            that functions are pure by default and side effects are handled through explicit constructs such as monads.
+            Haskell's type system is extremely powerful, allowing developers to encode complex invariants directly in
+            types. This can make Haskell code remarkably reliable, though the learning curve can be steep.
+        </p>
+        <p>
+            Haskell's emphasis on purity and laziness has influenced many other languages, including F#, which adopts
+            some of its ideas while remaining more pragmatic and multi-paradigm.
+        </p>
+
+        <h3>Scala, Elixir, and Clojure: functional ideas in different ecosystems</h3>
+        <p>
+            <strong>Scala</strong> brings functional programming to the JVM, blending it with object-oriented features.
+            <strong>Elixir</strong> builds on the Erlang VM to provide a functional language focused on concurrency and
+            fault tolerance. <strong>Clojure</strong> is a functional Lisp that emphasises immutable data and simple
+            abstractions. Each of these languages demonstrates how functional ideas can be adapted to different runtime
+            environments and problem domains.
+        </p>
+        <p>
+            Even if you primarily work in a non-functional language, studying these ecosystems can broaden your
+            perspective and inspire new ways of structuring your own code.
+        </p>
+    </section>
+
+    <section>
+        <h2>Benefits of functional programming</h2>
+        <p>
+            Adopting functional programming can bring several tangible benefits to your projects and your thinking as a
+            developer. These benefits are not magic; they arise from the discipline of using pure functions, immutable
+            data, and expressive types.
+        </p>
+
+        <h3>Easier reasoning and testing</h3>
+        <p>
+            Because pure functions depend only on their inputs, they are easier to reason about and test. You do not
+            need to worry about hidden state or complex interactions between different parts of the system. Given a
+            function and a set of inputs, you can predict the output and verify it with straightforward tests.
+        </p>
+        <p>
+            In F#, unit tests for functional code often feel like checking mathematical identities: you provide inputs,
+            assert outputs, and trust that the absence of side effects keeps behavior stable over time.
+        </p>
+
+        <h3>Improved modularity and reuse</h3>
+        <p>
+            Functional programming encourages small, composable functions. Instead of writing large methods that handle
+            many responsibilities, you break logic into focused pieces that can be reused in different contexts. Higher-
+            order functions and function composition make it easy to build complex behavior from simple parts.
+        </p>
+        <p>
+            This modularity can lead to cleaner architectures. For example, in an F# application, you might separate
+            pure domain logic from impure infrastructure code, keeping the core of your system easy to test and reason
+            about while isolating side effects at the edges.
+        </p>
+
+        <h3>Concurrency and parallelism</h3>
+        <p>
+            Immutable data and pure functions are naturally friendly to concurrency. When no function mutates shared
+            state, you can run many functions in parallel without worrying about race conditions or subtle timing bugs.
+            This is one reason functional programming is popular in domains that require high levels of concurrency,
+            such as telecommunications and distributed systems.
+        </p>
+        <p>
+            Languages like Elixir and Clojure emphasise this aspect, but the same principles apply in F# when you use
+            asynchronous workflows or parallel processing libraries. The functional style reduces the cognitive load of
+            thinking about concurrent behavior.
+        </p>
+
+        <h3>Expressive domain modeling</h3>
+        <p>
+            Functional languages often provide rich type systems that make it easy to model domain concepts directly in
+            code. Discriminated unions, records, and algebraic data types allow you to represent states and transitions
+            explicitly. Pattern matching then lets you handle each case in a clear, structured way.
+        </p>
+        <p>
+            In F#, this style of domain modeling is common in financial systems, web backends, and data-processing
+            pipelines. By encoding business rules in types and pure functions, you reduce ambiguity and make the code
+            itself a form of documentation.
+        </p>
+    </section>
+
+    <section>
+        <h2>Challenges and misconceptions</h2>
+        <p>
+            Functional programming is not a silver bullet, and it comes with its own challenges. Understanding these
+            challenges can help you adopt the paradigm realistically and avoid common misconceptions.
+        </p>
+
+        <h3>Learning curve</h3>
+        <p>
+            If you are used to imperative or object-oriented programming, functional ideas can feel alien at first.
+            Concepts like higher-order functions, immutability, and monads may require time to internalise. Some
+            languages, such as Haskell, have reputations for steep learning curves.
+        </p>
+        <p>
+            F# aims to soften this curve by providing a gentle syntax, strong tooling, and interoperability with
+            existing .NET code. You can adopt functional ideas gradually, starting with pure functions and immutable
+            data, and then exploring more advanced features as you grow comfortable.
+        </p>
+
+        <h3>Performance concerns</h3>
+        <p>
+            Some developers worry that immutability and persistent data structures will hurt performance. In practice,
+            modern functional languages use efficient implementations that share structure between versions, making
+            common operations fast enough for most workloads. When necessary, you can still use mutable structures in a
+            controlled way.
+        </p>
+        <p>
+            F#, Scala, and Clojure all demonstrate that functional programming can coexist with high-performance
+            systems. The key is to understand where immutability brings the most value and where controlled mutation is
+            acceptable.
+        </p>
+
+        <h3>“Functional vs object-oriented” false dichotomy</h3>
+        <p>
+            Another misconception is that you must choose between functional and object-oriented programming as mutually
+            exclusive options. In reality, many modern languages are multi-paradigm. F#, Scala, and even C# allow you
+            to mix functional and object-oriented styles, choosing the right tool for each part of the problem.
+        </p>
+        <p>
+            Learning functional programming does not mean abandoning everything you know about objects and classes. It
+            means expanding your toolbox and gaining new ways to structure systems.
+        </p>
+    </section>
+
+    <section>
+        <h2>Getting started with functional programming</h2>
+        <p>
+            If you are curious about functional programming, the best way to learn is to write code. You can start in a
+            language you already know by adopting functional habits: using pure functions, avoiding unnecessary
+            mutation, and experimenting with higher-order functions. Or you can dive into a functional-first language
+            like F# or Haskell to experience the paradigm more directly.
+        </p>
+        <p>
+            With F#, for example, you can install the .NET SDK and create a simple console project:
+        </p>
+        <pre><code>dotnet new console -lang "F#" -o FunctionalIntro
+cd FunctionalIntro
+dotnet run</code></pre>
+        <p>
+            From there, try modeling a small domain you care about: a to-do list, a simple game, or a data-processing
+            pipeline. Focus on keeping functions pure and data immutable. Let the type system guide you, and pay
+            attention to how your thinking shifts as you embrace composition and explicit domain modeling.
+        </p>
+        <p>
+            As you explore, read code from other functional languages. Haskell will show you what a purely functional
+            world looks like; Scala and Elixir will demonstrate how functional ideas blend with other paradigms. Over
+            time, you will develop an intuition for when functional approaches make a problem simpler and when other
+            styles might be more appropriate.
+        </p>
+    </section>
+
+    <section>
+        <h2>Closing thoughts</h2>
+        <p>
+            Functional programming is ultimately about clarity. By emphasising pure functions, immutability, and
+            expressive types, it invites you to write code that behaves predictably and communicates intent directly.
+            Languages like F#, Haskell, Scala, Elixir, and Clojure each offer their own take on the paradigm, but they
+            share a common goal: helping you build systems that are easier to reason about, test, and evolve.
+        </p>
+        <p>
+            You do not need to become a “pure functional programmer” to benefit from these ideas. Even small shifts,
+            such as favoring pure functions, reducing shared mutable state, and modeling domains with clear types, can
+            have a significant impact on the quality of your code. As you experiment, you may find that functional
+            programming changes not only how you write software, but how you think about problems altogether.
+        </p>
+        <p>
+            If you are ready to take the next step, pick a functional language (F# is a great choice if you are already
+            in the .NET world) and build something modest but real. Let the paradigm challenge your habits, and notice
+            where it makes things simpler. Over time, functional programming can become a powerful lens through which
+            you design, reason, and create.
+        </p>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; <span id="year"></span> Functional Programming Overview</p>
+</footer>
+
+<script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

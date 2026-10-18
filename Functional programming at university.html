@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Functional Programming at University</title>
+    <link rel="icon" type="image/png" href="university.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Why functional programming languages, from OCaml to Haskell to F#, remain central to academic Computer Science, and why universities continue to rely on them to teach foundational ideas.">
+
+    <style>
+        :root {
+            --bg: #fdfcf9;
+            --panel: #ffffff;
+            --accent: #003b5c;
+            --accent-light: #4f81a1;
+            --accent-soft: #b7cbd9;
+            --text: #2e2e2e;
+            --muted: #6d6d6d;
+            --border: #dcdcdc;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Merriweather", Georgia, serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.75;
+        }
+
+        header {
+            background: var(--accent);
+            color: #ffffff;
+            padding: 3rem 1.5rem;
+            text-align: center;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.7rem;
+            letter-spacing: 0.02em;
+        }
+
+        header p {
+            max-width: 780px;
+            margin: 1rem auto 0;
+            font-size: 1.15rem;
+        }
+
+        main {
+            max-width: 1040px;
+            margin: 2.5rem auto 3.5rem;
+            padding: 0 1.5rem;
+        }
+
+        section {
+            background: var(--panel);
+            border-radius: 14px;
+            padding: 2rem 1.8rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 1.9rem;
+            color: var(--accent);
+        }
+
+        h3 {
+            margin-top: 1.2rem;
+            font-size: 1.3rem;
+            color: var(--accent-light);
+        }
+
+        p {
+            margin: 0.7rem 0;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+        }
+
+        code {
+            background: #eef3f6;
+            padding: 0.2rem 0.35rem;
+            border-radius: 4px;
+            font-family: "Consolas", "SF Mono", Menlo, monospace;
+            border: 1px solid #d0d8df;
+        }
+
+        pre {
+            background: #003b5c;
+            color: #fdfcf9;
+            padding: 1rem 1.2rem;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-size: 0.95rem;
+            border: 1px solid #002a42;
+            margin-top: 0.6rem;
+        }
+
+        pre code {
+            background: transparent;
+            border: none;
+            padding: 0;
+        }
+
+        footer {
+            background: var(--accent-soft);
+            color: #003b5c;
+            text-align: center;
+            padding: 1.6rem;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--accent);
+        }
+    </style>
+</head>
+
+<body>
+<header>
+    <h1>Functional Programming in University Computing Courses</h1>
+    <p>
+        Why functional programming languages, from OCaml to Haskell to F#, remain central to academic Computer Science, and why universities continue to rely on them to teach foundational ideas.
+    </p>
+</header>
+
+<main>
+
+    <section>
+        <h2>Introduction</h2>
+        <p>
+            <a href="Functional programming.html">Functional programming</a> languages have long held a special place in university-level computer science
+            courses. While industry often gravitates toward languages like <a href="F v Python.html">Python</a>, Java, or JavaScript, academia
+            frequently chooses languages such as OCaml, Haskell, Scheme, and increasingly <a href="fintro.html">F#</a>. These languages are not
+            selected because they dominate the job market, but because they illuminate core principles of computation
+            more clearly than many mainstream languages.
+        </p>
+        <p>
+            At universities such as Cambridge, Oxford, Imperial, and many others worldwide, functional languages are
+            used to teach first-year programming, algorithms, semantics, and formal reasoning. OCaml, in particular, is
+            famously used at Cambridge for its Part IA Foundations of Computer Science and Programming courses.
+        </p>
+        <p>
+            But why do academics choose functional languages so consistently? And what role does a modern functional
+            language like F# play in this landscape?
+        </p>
+    </section>
+
+    <section>
+        <h2>Why functional languages are academically popular</h2>
+        <p>
+            Functional programming languages offer several advantages that align closely with the goals of academic
+            computing education. Universities aim to teach students how computation works, how languages are structured,
+            and how to reason rigorously about programs. Functional languages support these goals exceptionally well.
+        </p>
+
+        <h3>1. Mathematical foundations</h3>
+        <p>
+            Functional programming is rooted in the lambda calculus — a formal mathematical system that underpins much
+            of modern programming language theory. Because functional languages map closely to mathematical functions,
+            they make it easier for students to understand:
+        </p>
+        <ul>
+            <li>recursion</li>
+            <li>induction</li>
+            <li>formal semantics</li>
+            <li>proofs of correctness</li>
+        </ul>
+        <p>
+            When students write a recursive function in OCaml or F#, they are effectively writing a direct translation
+            of a mathematical definition - see <a href="Fibonacci and F.html">Fibonacci in F#</a> for an example. This clarity is invaluable in early teaching.
+        </p>
+
+        <h3>2. Immutability encourages safer reasoning</h3>
+        <p>
+            Functional languages emphasise immutability. Values do not change; instead, new values are created. This
+            eliminates entire classes of bugs and makes reasoning about program behaviour significantly easier.
+        </p>
+        <p>
+            For students learning about state machines, concurrency, or formal verification, immutability provides a
+            clean foundation without the complications of mutable state.
+        </p>
+
+        <h3>3. Concise syntax reduces cognitive load</h3>
+        <p>
+            Functional languages tend to be concise. OCaml, Haskell, and F# allow students to express ideas clearly
+            without boilerplate. This means students spend more time thinking about algorithms and less time wrestling
+            with syntax.
+        </p>
+
+        <h3>4. Strong static typing teaches abstraction</h3>
+        <p>
+            Most academic functional languages have powerful static type systems. These systems teach students how to:
+        </p>
+        <ul>
+            <li>model data precisely</li>
+            <li>use algebraic data types</li>
+            <li>understand polymorphism</li>
+            <li>reason about type inference</li>
+        </ul>
+        <p>
+            Languages like OCaml and F# provide immediate feedback when a student’s mental model does not match the
+            program’s structure. This helps build strong habits early.
+        </p>
+
+        <h3>5. Functional languages encourage declarative thinking</h3>
+        <p>
+            Declarative programming — describing what should be computed rather than how — is a powerful mindset that
+            supports later learning in:
+        </p>
+        <ul>
+            <li>logic programming</li>
+            <li>database query languages</li>
+            <li>distributed systems</li>
+            <li>compiler design</li>
+        </ul>
+        <p>
+            Functional languages naturally encourage this way of thinking.
+        </p>
+    </section>
+
+    <section>
+        <h2>Examples of functional languages used in universities</h2>
+        <p>
+            Many universities choose functional languages for their first-year courses. Some notable examples include:
+        </p>
+
+        <h3>OCaml at Cambridge</h3>
+        <p>
+            The University of Cambridge uses OCaml extensively in its undergraduate Computer Science Tripos. OCaml is
+            used because it is fast, expressive, strongly typed, and ideal for teaching both functional and imperative
+            paradigms. Its module system and type inference make it a favourite among academics.
+        </p>
+
+        <h3>Haskell at many international universities</h3>
+        <p>
+            Haskell is widely used in courses on functional programming, type theory, and semantics. Its purity and
+            laziness make it ideal for teaching advanced concepts such as monads, category theory, and compiler design.
+        </p>
+
+        <h3>Scheme and Racket in introductory courses</h3>
+        <p>
+            Scheme (and its modern descendant, Racket) is used in many introductory courses, especially those inspired
+            by the classic textbook <em>Structure and Interpretation of Computer Programs</em>. Its minimal syntax and
+            emphasis on recursion make it ideal for teaching foundational ideas.
+        </p>
+
+        <h3>F#: a modern functional language entering academia</h3>
+        <p>
+            F# is increasingly appearing in academic contexts, especially in courses that blend functional programming
+            with practical software engineering. Its combination of:
+        </p>
+        <ul>
+            <li>functional-first design</li>
+            <li>strong static typing</li>
+            <li>excellent .NET interoperability</li>
+            <li>concise syntax</li>
+        </ul>
+        <p>
+            makes it attractive for universities that want to teach functional programming while also preparing students
+            for real-world development. F# is particularly popular in finance-related courses and in institutions that
+            already use .NET technologies.
+        </p>
+    </section>
+
+    <section>
+        <h2>Why functional programming remains academically relevant</h2>
+        <p>
+            Even as industry trends shift, functional programming remains academically relevant because it teaches
+            timeless principles. Universities are not trying to train students for a specific job; they are trying to
+            teach them how to think about computation.
+        </p>
+
+        <h3>Functional languages reveal the essence of computation</h3>
+        <p>
+            Without mutable state, side effects, or complex object hierarchies, functional languages expose the core
+            structure of algorithms. Students learn:
+        </p>
+        <ul>
+            <li>recursion as a fundamental control structure</li>
+            <li>functions as first-class values</li>
+            <li>data types as algebraic structures</li>
+            <li>evaluation strategies and semantics</li>
+        </ul>
+
+        <h3>They prepare students for advanced topics</h3>
+        <p>
+            Functional programming provides a foundation for:
+        </p>
+        <ul>
+            <li>compiler construction</li>
+            <li>formal verification</li>
+            <li>type theory</li>
+            <li>program analysis</li>
+            <li>parallel and distributed systems</li>
+        </ul>
+
+        <h3>They encourage rigorous thinking</h3>
+        <p>
+            Because functional languages are closer to mathematics, they encourage precise reasoning. Students learn to
+            think about invariants, proofs, and correctness — skills that transfer to every area of computer science.
+        </p>
+    </section>
+
+    <section>
+        <h2>Conclusion</h2>
+        <p>
+            Functional programming languages remain popular in university computing courses because they teach the
+            foundations of computer science more clearly than many mainstream languages. OCaml, Haskell, Scheme, and
+            F# each offer unique strengths, but they share a common goal: helping students understand computation at a
+            deep, principled level.
+        </p>
+        <p>
+            As industry increasingly adopts functional ideas, from immutability to pure functions to expressive type
+            systems, the academic emphasis on functional programming looks not only traditional but prescient. Students
+            who learn functional programming early often find that it shapes their thinking for years to come.
+        </p>
+        <p>
+            Whether it is OCaml at Cambridge, Haskell in type theory courses, or F# in modern functional programming
+            modules, functional languages continue to play a vital role in shaping the next generation of computer
+            scientists.
+        </p>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; <span id="year"></span> Functional Programming in Academia</p>
+</footer>
+
+<script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>

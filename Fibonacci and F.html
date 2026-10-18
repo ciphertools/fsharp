@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fibonacci Numbers in F#</title>
+    <link rel="icon" type="image/png" href="fibonacci.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A deep exploration of multiple ways to compute Fibonacci numbers in F#, from simple recursion to efficient tail-recursive and sequence-based approaches. This page demonstrates how functional programming techniques influence algorithm design.">
+
+    <style>
+        :root {
+            --bg: #faf7f2;
+            --panel: #fffdf8;
+            --accent: #b45f06;
+            --accent-light: #e6b17e;
+            --text: #2b2b2b;
+            --muted: #6b6b6b;
+            --border: #d9c7b8;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Georgia", "Times New Roman", serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.75;
+        }
+
+        header {
+            background: linear-gradient(120deg, #b45f06, #e6b17e);
+            color: #fff;
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.6rem;
+            letter-spacing: 0.03em;
+        }
+
+        header p {
+            max-width: 760px;
+            margin: 1rem auto 0;
+            font-size: 1.15rem;
+        }
+
+        main {
+            max-width: 980px;
+            margin: 2rem auto 3rem;
+            padding: 0 1.5rem;
+        }
+
+        section {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.75rem 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 1.8rem;
+            color: var(--accent);
+        }
+
+        h3 {
+            margin-top: 1.2rem;
+            font-size: 1.35rem;
+            color: var(--accent-light);
+        }
+
+        p {
+            margin: 0.7rem 0;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+        }
+
+        .codeLine {
+            background: #574f46;
+            padding: 0.2rem 0.35rem;
+            border-radius: 4px;
+            font-family: "Consolas", "SF Mono", Menlo, monospace;
+            border: 1px solid #e0d4c8;
+        }
+        .codeBlock {
+            display: block;
+            width: 100%;
+            background: #574f46;
+            padding: 0.6rem 0.8rem;  
+            font-family: "Consolas", "SF Mono", Menlo, monospace;
+            border: 1px solid #574f46;
+            box-sizing: border-box;  
+            border: 1px solid #e0d4c8;
+            border-radius: 4px;
+        }
+
+        pre {
+            background: #2b2b2b;
+            color: #f8f8f2;
+            padding: 1rem 1.2rem;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-size: 0.95rem;
+            border: 1px solid #444;
+        }
+
+        footer {
+            background: #e6b17e;
+            color: #2b2b2b;
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.95rem;
+            border-top: 1px solid #b45f06;
+        }
+    </style>
+</head>
+
+<body>
+<header>
+    <h1>Generating Fibonacci Numbers in F#</h1>
+    <p>
+        A deep exploration of multiple ways to compute Fibonacci numbers in <a href="fintro.html">F#</a>, from simple recursion to efficient
+        tail-recursive and sequence-based approaches. This page demonstrates how functional programming techniques
+        influence algorithm design.
+    </p>
+</header>
+
+<main>
+
+    <section>
+        <h2>The Fibonacci Sequence</h2>
+        <p>
+            The Fibonacci sequence is one of the most famous sequences in mathematics. It begins with 0 and 1, and each
+            subsequent number is the sum of the previous two:
+        </p>
+        <pre><code class="codeLine">0, 1, 1, 2, 3, 5, 8, 13, 21, 34, ...</code></pre>
+        <p>
+            In functional programming, Fibonacci numbers are a classic example used to illustrate recursion, immutability,
+            pattern matching, and sequence generation. F# provides elegant ways to express all of these approaches.
+        </p>
+        <p>
+            In this page, we will explore several different implementations:
+        </p>
+        <ul>
+            <li>Naive recursion</li>
+            <li>Pattern-matched recursion</li>
+            <li>Tail-recursive Fibonacci</li>
+            <li>Iterative Fibonacci using folds</li>
+            <li>Fibonacci using sequences (<code>seq</code>)</li>
+            <li>Fibonacci using arrays</li>
+            <li>Memoised Fibonacci</li>
+        </ul>
+        <p>
+            Each method has different performance characteristics and expresses different aspects of functional thinking.
+        </p>
+    </section>
+
+    <section>
+        <h2>1. Naive Recursive Fibonacci</h2>
+        <p>
+            The simplest way to define Fibonacci numbers is directly from the mathematical recurrence:
+        </p>
+        <pre><code class="codeLine">fib(n) = fib(n - 1) + fib(n - 2)</code></pre>
+        <p>
+            In F#, this becomes:
+        </p>
+        <pre><code class="codeBlock">let rec fib n =
+    if n &lt;= 1 then n
+    else fib (n - 1) + fib (n - 2)</code></pre>
+        <p>
+            This version is beautifully simple but extremely slow for large <code>n</code>, because it recomputes values
+            many times. It is useful for teaching recursion but not for production.
+        </p>
+    </section>
+
+    <section>
+        <h2>2. Pattern‑Matched Recursive Fibonacci</h2>
+        <p>
+            F#'s pattern matching allows a cleaner expression of the same idea:
+        </p>
+        <pre><code class="codeBlock">let rec fibPM n =
+    match n with
+    | 0 -> 0
+    | 1 -> 1
+    | _ -> fibPM (n - 1) + fibPM (n - 2)</code></pre>
+        <p>
+            This version is clearer and more idiomatic. Pattern matching is one of F#'s strengths, and it helps express
+            domain logic directly.
+        </p>
+    </section>
+
+    <section>
+        <h2>3. Tail-Recursive Fibonacci</h2>
+        <p>
+            Tail recursion is a technique where recursive calls occur in “tail position,” allowing the compiler to
+            optimise them into loops. This avoids stack growth and makes recursion efficient.
+        </p>
+        <pre><code class="codeBlock">let fibTail n =
+    let rec loop a b count =
+        if count = 0 then a
+        else loop b (a + b) (count - 1)
+    loop 0 1 n</code></pre>
+        <p>
+            This version is extremely fast and handles very large <code>n</code> without stack overflow. It is the
+            recommended recursive approach in F#.
+        </p>
+    </section>
+
+    <section>
+        <h2>4. Iterative Fibonacci Using Fold</h2>
+        <p>
+            Functional languages often use folds to accumulate results. F#'s <code>List.fold</code> makes this elegant:
+        </p>
+        <pre><code class="codeBlock">let fibFold n =
+    let (a, _) =
+        [1 .. n]
+        |> List.fold (fun (a, b) _ -> (b, a + b)) (0, 1)
+    a</code></pre>
+        <p>
+            This approach is compact and expressive, showing how higher‑order functions can replace explicit loops.
+        </p>
+    </section>
+
+    <section>
+        <h2>5. Fibonacci Using Sequences</h2>
+        <p>
+            F#'s <code>seq</code> type allows lazy generation of infinite sequences. This is perfect for Fibonacci:
+        </p>
+        <pre><code class="codeBlock">let fibSeq =
+    Seq.unfold (fun (a, b) -> Some(a, (b, a + b))) (0, 1)</code></pre>
+        <p>
+            You can then take as many Fibonacci numbers as you want:
+        </p>
+        <pre><code class="codeBlock">fibSeq |> Seq.take 10 |> Seq.toList</code></pre>
+        <p>
+            This approach is elegant and efficient, and it demonstrates the power of lazy evaluation.
+        </p>
+    </section>
+
+    <section>
+        <h2>6. Fibonacci Using Arrays</h2>
+        <p>
+            Sometimes you want a fixed array of Fibonacci numbers. F# makes this simple:
+        </p>
+        <pre><code class="codeBlock">let fibArray n =
+    let arr = Array.zeroCreate (n + 1)
+    arr.[0] <- 0
+    arr.[1] <- 1
+    for i in 2 .. n do
+        arr.[i] <- arr.[i - 1] + arr.[i - 2]
+    arr</code></pre>
+        <p>
+            This version is imperative but efficient. F# allows imperative constructs when needed.
+        </p>
+    </section>
+
+    <section>
+        <h2>7. Memoised Fibonacci</h2>
+        <p>
+            Memoisation stores previously computed results to avoid recomputation. This makes recursive Fibonacci fast:
+        </p>
+        <pre><code class="codeBlock">let fibMemo =
+    let cache = System.Collections.Generic.Dictionary<int,int>()
+    let rec fib n =
+        if cache.ContainsKey(n) then cache.[n]
+        else
+            let value =
+                match n with
+                | 0 -> 0
+                | 1 -> 1
+                | _ -> fib (n - 1) + fib (n - 2)
+            cache.[n] <- value
+            value
+    fib</code></pre>
+        <p>
+            This version is ideal when you want to preserve the recursive structure but avoid exponential time.
+        </p>
+    </section>
+
+    <section>
+        <h2>Comparing the Approaches</h2>
+        <p>
+            Each method has strengths and weaknesses:
+        </p>
+        <ul>
+            <li><strong>Naive recursion:</strong> simple but slow.</li>
+            <li><strong>Pattern matching:</strong> clearer but still exponential.</li>
+            <li><strong>Tail recursion:</strong> fast and safe.</li>
+            <li><strong>Fold:</strong> elegant and functional.</li>
+            <li><strong>Sequences:</strong> lazy and flexible.</li>
+            <li><strong>Arrays:</strong> imperative but efficient.</li>
+            <li><strong>Memoisation:</strong> fast for repeated calls.</li>
+        </ul>
+        <p>
+            F# gives you the freedom to choose the right tool for the job. Functional programming encourages clarity,
+            immutability, and composability, but F# also allows imperative techniques when they improve performance.
+        </p>
+    </section>
+
+    <section>
+        <h2>Closing Thoughts</h2>
+        <p>
+            Fibonacci numbers are a perfect playground for exploring F#'s functional features. Whether you prefer
+            recursion, sequences, folds, or memoisation, F# provides expressive tools that make algorithm design both
+            elegant and efficient.
+        </p>
+        <p>
+            As you experiment with these approaches, you'll gain a deeper appreciation for how functional programming
+            shapes the way you think about problems. This is why functional programming languages feature heavily in 
+            <a href="Functional programming at university.html">university courses</a>. F#'s blend of functional purity and pragmatic flexibility makes it
+            an ideal language for exploring these ideas.
+        </p>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; <span id="year"></span> Fibonacci in F#</p>
+</footer>
+
+<script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>

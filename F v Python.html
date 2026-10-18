@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>F# vs Python</title>
+    <link rel="icon" type="image/png" href="python.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A practical, nuanced comparison between F# and Python, two languages with very different personalities, but both capable of expressing powerful ideas. We'll look at syntax, paradigms, performance, ecosystems, and how each language shapes the way you think about problems.">
+
+    <style>
+        :root {
+            --bg: #0b1120;
+            --bg-alt: #020617;
+            --panel: #111827;
+            --panel-soft: #1f2937;
+            --accent: #38bdf8;
+            --accent-soft: #7dd3fc;
+            --accent-strong: #f97316;
+            --text: #e5e7eb;
+            --muted: #9ca3af;
+            --border: #1f2937;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top, #1f2937 0, #020617 55%, #000 100%);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        header {
+            background: linear-gradient(135deg, #38bdf8 0%, #6366f1 40%, #f97316 100%);
+            color: #0b1120;
+            padding: 2.7rem 1.5rem;
+            text-align: center;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            letter-spacing: 0.04em;
+        }
+
+        header p {
+            max-width: 780px;
+            margin: 1rem auto 0;
+            font-size: 1.1rem;
+        }
+
+        main {
+            max-width: 1040px;
+            margin: 2.2rem auto 3.5rem;
+            padding: 0 1.5rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        section {
+            background: var(--panel);
+            border-radius: 14px;
+            padding: 1.8rem 1.6rem;
+            margin-bottom: 1.6rem;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.75);
+        }
+
+        .highlight {
+            background: var(--panel-soft);
+        }
+
+        a {
+            color: #0066cc;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 1.7rem;
+            color: var(--accent-soft);
+        }
+
+        h3 {
+            margin-top: 1.2rem;
+            font-size: 1.25rem;
+            color: var(--accent);
+        }
+
+        p {
+            margin: 0.7rem 0;
+            color: var(--text);
+        }
+
+        strong {
+            color: var(--accent-soft);
+        }
+
+        ul, ol {
+            margin: 0.6rem 0 0.6rem 1.5rem;
+            padding: 0;
+        }
+
+        li {
+            margin: 0.3rem 0;
+            color: var(--text);
+        }
+
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.6rem;
+            font-size: 0.95rem;
+        }
+
+        .compare-table th,
+        .compare-table td {
+            padding: 0.55rem 0.6rem;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+        }
+
+        .compare-table th {
+            text-align: left;
+            color: var(--accent-soft);
+            background: #020617;
+        }
+
+        .compare-table td.label {
+            color: var(--muted);
+            width: 26%;
+        }
+
+        code {
+            background: #020617;
+            padding: 0.18rem 0.4rem;
+            border-radius: 4px;
+            font-family: "Consolas", "SF Mono", Menlo, monospace;
+            border: 1px solid rgba(148, 163, 184, 0.45);
+        }
+
+        pre {
+            background: #020617;
+            color: #e5e7eb;
+            padding: 1rem 1.1rem;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-size: 0.95rem;
+            border: 1px solid rgba(148, 163, 184, 0.45);
+            margin-top: 0.6rem;
+        }
+
+        pre code {
+            background: transparent;
+            border: none;
+            padding: 0;
+        }
+
+        .badge-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.6rem;
+        }
+
+        .badge {
+            padding: 0.25rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(148, 163, 184, 0.5);
+            background: rgba(15, 23, 42, 0.9);
+            color: var(--muted);
+        }
+
+        .badge.fsharp {
+            border-color: #22c55e;
+            color: #bbf7d0;
+        }
+
+        .badge.python {
+            border-color: #facc15;
+            color: #fef9c3;
+        }
+
+        footer {
+            background: var(--bg-alt);
+            color: var(--muted);
+            text-align: center;
+            padding: 1.6rem;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(148, 163, 184, 0.35);
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Comparison of F# and Python</h1>
+    <p>
+        A practical, nuanced comparison between F# and Python, two languages with very different personalities, but both
+        capable of expressing powerful ideas. We'll look at syntax, paradigms, performance, ecosystems, and how each
+        language shapes the way you think about problems.
+    </p>
+</header>
+
+<main>
+    <section class="highlight">
+        <h2>Big picture: how F# and Python feel</h2>
+        <p>
+            F# and Python are both high-level languages, but they occupy different mental spaces. Python is often
+            described as a “batteries-included” scripting language with a focus on readability and rapid development.
+            It is dynamically typed, interpreted, and widely used for web development, data science, automation, and
+            scripting.
+        </p>
+        <p>
+            F#, by contrast, is a <strong>functional-first</strong>, statically typed language that runs on the .NET
+            platform. It encourages immutability, pure functions, and expressive type modeling. While F# can absolutely
+            be used for scripting and data work, it shines particularly in domains where correctness, domain modeling,
+            and composability matter: finance, scientific computing, backend services, and complex business logic.
+        </p>
+        <p>
+            In short:
+        </p>
+        <ul>
+            <li><strong>Python:</strong> dynamic, flexible, ubiquitous, great for quick iteration and glue code.</li>
+            <li><strong>F#:</strong> functional-first, strongly typed, great for robust domain modeling and reliable systems.</li>
+        </ul>
+        <div class="badge-row">
+            <span class="badge fsharp">Functional-first</span>
+            <span class="badge fsharp">Static typing</span>
+            <span class="badge fsharp">.NET ecosystem</span>
+            <span class="badge python">Dynamic typing</span>
+            <span class="badge python">Huge library ecosystem</span>
+            <span class="badge python">Data science powerhouse</span>
+        </div>
+    </section>
+
+    <section>
+        <h2>Syntax and basic examples</h2>
+        <p>
+            Let's start with a simple example: computing the sum of squares of a list of numbers. Seeing the same idea
+            in both languages highlights their different styles.
+        </p>
+
+        <div class="grid">
+            <div>
+                <h3>F#: functional pipeline style</h3>
+                <pre><code>let numbers = [1; 2; 3; 4; 5]
+
+let sumOfSquares nums =
+    nums
+    |> List.map (fun n -> n * n)
+    |> List.sum
+
+let result = sumOfSquares numbers
+printfn "Sum of squares: %d" result</code></pre>
+                <p>
+                    F# uses <code>let</code> for bindings, and the pipeline operator <code>|&gt;</code> to pass values
+                    through a sequence of transformations. Anonymous functions use <code>fun</code>, and the standard
+                    library provides rich modules like <code>List</code> for functional operations.
+                </p>
+            </div>
+            <div>
+                <h3>Python: imperative with functional touches</h3>
+                <pre><code>numbers = [1, 2, 3, 4, 5]
+
+def sum_of_squares(nums):
+    return sum(n * n for n in nums)
+
+result = sum_of_squares(numbers)
+print(f"Sum of squares: {result}")</code></pre>
+                <p>
+                    Python uses <code>def</code> for functions, and list comprehensions or generator expressions for
+                    concise transformations. The style is often more imperative, but functional patterns are available
+                    and widely used.
+                </p>
+            </div>
+        </div>
+
+        <p>
+            Both snippets are readable, but they encourage slightly different habits. F# nudges you toward pipelines and
+            pure transformations; Python nudges you toward comprehensions and flexible, dynamic constructs.
+        </p>
+    </section>
+
+    <section>
+        <h2>Typing: static vs dynamic</h2>
+        <p>
+            One of the most important differences between F# and Python is their type systems.
+        </p>
+
+        <table class="compare-table">
+            <tr>
+                <th>Aspect</th>
+                <th>F#</th>
+                <th>Python</th>
+            </tr>
+            <tr>
+                <td class="label">Typing style</td>
+                <td>Static, with powerful type inference.</td>
+                <td>Dynamic, with optional type hints (PEP 484).</td>
+            </tr>
+            <tr>
+                <td class="label">Error detection</td>
+                <td>Many errors caught at compile time.</td>
+                <td>Errors typically appear at runtime.</td>
+            </tr>
+            <tr>
+                <td class="label">Type inference</td>
+                <td>Extensive; most code needs no explicit annotations.</td>
+                <td>Not built-in; type hints are checked by external tools.</td>
+            </tr>
+            <tr>
+                <td class="label">Domain modeling</td>
+                <td>Discriminated unions, records, pattern matching.</td>
+                <td>Classes, dataclasses, enums, duck typing.</td>
+            </tr>
+        </table>
+
+        <h3>F#: expressive static types</h3>
+        <p>
+            F#'s type system is a core part of its identity. You can model domain concepts directly using records and
+            discriminated unions:
+        </p>
+        <pre><code>type OrderStatus =
+    | Pending
+    | Shipped of trackingId : string
+    | Cancelled of reason   : string</code></pre>
+        <p>
+            Combined with pattern matching, this forces you to consider all possible states explicitly, reducing the
+            chance of missing edge cases.
+        </p>
+
+        <h3>Python: flexibility and duck typing</h3>
+        <p>
+            Python's dynamic typing makes it extremely flexible. You can pass any object to a function as long as it
+            supports the operations you use—a style known as “duck typing.” Modern Python adds optional type hints:
+        </p>
+        <pre><code>from typing import List
+
+def sum_of_squares(nums: List[int]) -> int:
+    return sum(n * n for n in nums)</code></pre>
+        <p>
+            These hints improve tooling and documentation, but they are not enforced by the interpreter itself. Static
+            analysis tools like <code>mypy</code> can check them.
+        </p>
+    </section>
+
+    <section>
+        <h2>Paradigms and style</h2>
+        <p>
+            Both F# and Python support multiple paradigms, but they have different defaults and idioms.
+        </p>
+
+        <h3>F#: functional-first, multi-paradigm</h3>
+        <p>
+            F# is designed around functional programming:
+        </p>
+        <ul>
+            <li><strong>Immutability by default:</strong> values bound with <code>let</code> are immutable.</li>
+            <li><strong>First-class functions:</strong> functions are values, easily passed and composed.</li>
+            <li><strong>Expressions over statements:</strong> most constructs return values.</li>
+            <li><strong>Pattern matching:</strong> central to branching on structured data.</li>
+        </ul>
+        <p>
+            At the same time, F# supports object-oriented and imperative features when needed, making it pragmatic for
+            real-world systems.
+        </p>
+
+        <h3>Python: imperative, object-oriented, and “pragmatically functional”</h3>
+        <p>
+            Python’s core style is imperative and object-oriented:
+        </p>
+        <ul>
+            <li><strong>Mutable data structures:</strong> lists, dicts, sets are mutable by default.</li>
+            <li><strong>Classes and objects:</strong> widely used for structuring larger systems.</li>
+            <li><strong>Functional tools:</strong> <code>map</code>, <code>filter</code>, comprehensions, and
+                <code>functools</code> provide functional patterns.</li>
+        </ul>
+        <p>
+            Python encourages readability and simplicity, often favoring straightforward imperative code over more
+            abstract functional constructs.
+        </p>
+    </section>
+
+    <section>
+        <h2>Performance and runtime characteristics</h2>
+        <p>
+            Performance is a nuanced topic, but some broad trends are clear.
+        </p>
+
+        <h3>F#: compiled on .NET</h3>
+        <p>
+            F# compiles to .NET Intermediate Language and runs on the .NET runtime. This means:
+        </p>
+        <ul>
+            <li><strong>JIT compilation:</strong> code is compiled to native instructions at runtime.</li>
+            <li><strong>Good performance:</strong> similar to C# for many workloads.</li>
+            <li><strong>Access to .NET libraries:</strong> including high-performance numerical and IO libraries.</li>
+        </ul>
+        <p>
+            For CPU-bound tasks, F# can be significantly faster than pure Python, especially when using optimised .NET
+            libraries.
+        </p>
+
+        <h3>Python: interpreted, with many escape hatches</h3>
+        <p>
+            CPython, the reference implementation, is an interpreter. Pure Python code is often slower than compiled
+            languages, but:
+        </p>
+        <ul>
+            <li><strong>Native extensions:</strong> NumPy, pandas, and many libraries use C under the hood.</li>
+            <li><strong>Alternative runtimes:</strong> PyPy, Cython, and others can improve performance.</li>
+            <li><strong>Good enough for many tasks:</strong> especially IO-bound or glue-code scenarios.</li>
+        </ul>
+        <p>
+            In data science, Python's performance story is often “Python orchestrates, native code computes.”
+        </p>
+    </section>
+
+    <section>
+        <h2>Ecosystems and typical use cases</h2>
+        <p>
+            Both languages have strong ecosystems, but they dominate different spaces.
+        </p>
+
+        <h3>Where F# shines</h3>
+        <ul>
+            <li><strong>Finance and quantitative modeling:</strong> strong typing and functional style help manage
+                complex logic.</li>
+            <li><strong>Backend services on .NET:</strong> F# works well with ASP.NET Core, Azure Functions, and other
+                .NET tools.</li>
+            <li><strong>Domain-driven design:</strong> discriminated unions and records are ideal for modeling business
+                rules.</li>
+            <li><strong>Scientific and numerical computing:</strong> especially when combined with .NET libraries.</li>
+        </ul>
+
+        <h3>Where Python dominates</h3>
+        <ul>
+            <li><strong>Data science and machine learning:</strong> NumPy, pandas, scikit-learn, PyTorch, TensorFlow.</li>
+            <li><strong>Web development:</strong> Django, Flask, FastAPI.</li>
+            <li><strong>Scripting and automation:</strong> quick scripts, DevOps tooling, glue code.</li>
+            <li><strong>Education:</strong> widely taught as a first language due to its simplicity.</li>
+        </ul>
+
+        <p>
+            If you live in the .NET world and care about correctness and domain modeling, F# is a compelling choice. If
+            you live in the data science or general scripting world, Python is often the default.
+        </p>
+    </section>
+
+    <section>
+        <h2>Interoperability and tooling</h2>
+        <p>
+            Tooling and interoperability can strongly influence how pleasant a language is to use day-to-day.
+        </p>
+
+        <h3>F# tooling</h3>
+        <ul>
+            <li><strong>Editors:</strong> Visual Studio, JetBrains Rider, Visual Studio Code (Ionide).</li>
+            <li><strong>Build tools:</strong> <code>dotnet</code> CLI, FAKE, Paket.</li>
+            <li><strong>Interop:</strong> seamless with C#, VB.NET, and other .NET languages.</li>
+        </ul>
+        <p>
+            F# benefits from the maturity of the .NET ecosystem, including debugging, profiling, and deployment tools.
+        </p>
+
+        <h3>Python tooling</h3>
+        <ul>
+            <li><strong>Editors:</strong> VS Code, PyCharm, many others.</li>
+            <li><strong>Package management:</strong> <code>pip</code>, virtual environments, Poetry, Conda.</li>
+            <li><strong>Interop:</strong> easy integration with C, C++, and other languages via bindings.</li>
+        </ul>
+        <p>
+            Python’s tooling is heavily oriented toward data science, web development, and scripting, with rich support
+            for notebooks (Jupyter) and interactive exploration.
+        </p>
+    </section>
+
+    <section>
+        <h2>How each language shapes your thinking</h2>
+        <p>
+            Perhaps the most interesting difference between F# and Python is not technical, but cognitive. Each language
+            encourages different habits and ways of structuring problems.
+        </p>
+
+        <h3>F#: thinking in types and transformations</h3>
+        <p>
+            F# pushes you to:
+        </p>
+        <ul>
+            <li>Model your domain explicitly with types.</li>
+            <li>Use pure functions and pipelines to transform data.</li>
+            <li>Handle all possible cases via pattern matching.</li>
+            <li>Let the compiler guide you toward correctness.</li>
+        </ul>
+        <p>
+            Over time, this can change how you design systems—even when you switch back to other languages.
+        </p>
+
+        <h3>Python: thinking in scripts and objects</h3>
+        <p>
+            Python encourages:
+        </p>
+        <ul>
+            <li>Quick iteration and experimentation.</li>
+            <li>Simple, readable imperative code.</li>
+            <li>Using objects and modules to organise functionality.</li>
+            <li>Leveraging huge libraries to avoid reinventing wheels.</li>
+        </ul>
+        <p>
+            This makes Python an excellent language for exploring ideas rapidly and gluing systems together.
+        </p>
+    </section>
+
+    <section>
+        <h2>Which should you choose?</h2>
+        <p>
+            The honest answer is: it depends on your context and goals.
+        </p>
+        <ul>
+            <li>
+                <strong>Choose F#</strong> if you:
+                <ul>
+                    <li>Work in the .NET ecosystem.</li>
+                    <li>Care deeply about domain modeling and correctness.</li>
+                    <li>Enjoy functional programming and strong static typing.</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Choose Python</strong> if you:
+                <ul>
+                    <li>Work in data science, ML, or general scripting.</li>
+                    <li>Need rapid prototyping and huge library support.</li>
+                    <li>Prefer dynamic typing and flexible, concise code.</li>
+                </ul>
+            </li>
+        </ul>
+        <p>
+            In practice, many developers learn both. F# can sharpen your thinking about types and functions; Python can
+            give you a powerful, ubiquitous tool for everyday tasks and data work. The combination is surprisingly
+            complementary.
+        </p>
+    </section>
+</main>
+
+<footer>
+    <p>This blog is part of a series comparing <a href="fintro.html">F#</a> with other programming languages.  See also <a href="F v Java.html">F# vs Java</a>.</p>
+    <p>&copy; <span id="year"></span> F# vs Python</p>
+</footer>
+
+<script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
